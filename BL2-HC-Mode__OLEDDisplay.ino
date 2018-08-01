@@ -18,11 +18,11 @@
  *              State 1: Equipment Number Select
  *              State 2: Mode select (Scaling, Random, Pandemonium)
  *              State 3: Scaling intro - choose difficulty: 
- *                State 4: Scaling - Normal (Rand(0-20)>10)                   [* Terminal:: Start-> State = 0]
- *                State 5: Scaling - True Vault Hunter (TVH) (Rand(0-20)>7)         [* Terminal:: Start-> State = 0]
+ *                State 4: Scaling - Normal (Rand(0-20)>10)                       [* Terminal:: Start-> State = 0]
+ *                State 5: Scaling - True Vault Hunter (TVH) (Rand(0-20)>7)       [* Terminal:: Start-> State = 0]
  *                State 6: Scaling - Ultimate Vault Hunter (UVH) (Rand(0-20)>4)   [* Terminal:: Start-> State = 0]
- *              State 7: Random (Rand(Equip#))                                [* Terminal:: Start-> State = 0]
- *              State 8: Pandemonium (For each equip, Rand(0-1))              [* Terminal:: Start-> State = 0]
+ *              State 7: Random (Rand(Equip#))                                    [* Terminal:: Start-> State = 0]
+ *              State 8: Pandemonium (For each equip, Rand(0-1))                  [* Terminal:: Start-> State = 0]
  *              
  *   Programmer:  Scott Levine
  *                idskot@gmail.com
