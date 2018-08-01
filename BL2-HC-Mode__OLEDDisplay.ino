@@ -19,8 +19,8 @@
  *              State 2: Mode select (Scaling, Random, Pandemonium)
  *              State 3: Scaling intro - choose difficulty: 
  *                State 4: Scaling - Normal (Rand(0-20)>10)                   [* Terminal:: Start-> State = 0]
- *                State 5: Scaling - Vault Hunter (VH) (Rand(0-20)>7)         [* Terminal:: Start-> State = 0]
- *                State 6: Scaling - True Vault Hunter (TVH) (Rand(0-20)>4)   [* Terminal:: Start-> State = 0]
+ *                State 5: Scaling - True Vault Hunter (TVH) (Rand(0-20)>7)         [* Terminal:: Start-> State = 0]
+ *                State 6: Scaling - Ultimate Vault Hunter (UVH) (Rand(0-20)>4)   [* Terminal:: Start-> State = 0]
  *              State 7: Random (Rand(Equip#))                                [* Terminal:: Start-> State = 0]
  *              State 8: Pandemonium (For each equip, Rand(0-1))              [* Terminal:: Start-> State = 0]
  *              
@@ -72,9 +72,9 @@ void startISR()
       if(SELSTATE == 0)
           STATE = 4;      // IFF Sel = 0, Normal Mode
       else if(SELSTATE == 1)
-          STATE = 5;      // IFF Sel = 1, VH Mode
+          STATE = 5;      // IFF Sel = 1, TVH Mode
       else if(SELSTATE == 2)
-          STATE = 6;      // IFF Sel = 2, TVH Mode
+          STATE = 6;      // IFF Sel = 2, UVH Mode
       else
           STATE = 0;     // IFF out of bounds, reset program
     }
@@ -165,7 +165,7 @@ void intro()
   u8g.firstPage();
   do{
     u8g.setFont(u8g_font_unifont);
-    u8g.drawStr(2, 19, "Welcome Test");
+    u8g.drawStr(2, 19, "Welcome To");
     u8g.drawStr(2, 38, "Borderlands 2");
     u8g.drawStr(2, 57, "Hardcore mgmt");  
   }while(u8g.nextPage());
@@ -235,22 +235,6 @@ void u8gDrawCheck(int x, int y)
   u8g.drawLine(x, y-5, x+2, y);
   u8g.drawLine(x+2, y, x+6, y-10);
 }
-
-void drawScalingIntro()
-{
-  u8g_prepare();
-  u8g.setFont(u8g_font_unifont);
-  u8g.drawStr(2, 19, "Select Scaling");
-  u8g.drawStr(2, 38, "Difficulty:");
-  switch(SELSTATE)
-    {
-      case 0:   u8g.drawStr(2, 57, "Normal"); break;
-      case 1:   u8g.drawStr(2, 57, "Vault Hunter"); break;
-      case 2:   u8g.drawStr(2, 57, "True Vault Hunter"); break;
-      default:  u8g.drawStr(2, 57, "ERR"); break;
-    }
-}
-
 // Displays and allow user to choose difficulty wrt sliding scale
 void scalingIntro()
 {
@@ -270,8 +254,8 @@ void scalingIntro()
       switch(SELSTATE)
       {
           case 0:   u8g.drawStr(2, 57, "Normal"); break;                // Normal mode - 7/20 chance to trash
-          case 1:   u8g.drawStr(2, 57, "Vault Hunter"); break;          // Vault Hunter mode - 4/20 chance to trash
-          case 2:   u8g.drawStr(2, 57, "True Vault Hunter"); break;     // True Vault Hunter mode - 2/20 chance to trash
+          case 1:   u8g.drawStr(2, 57, "True Vault Hunter"); break;     // True Vault Hunter mode - 4/20 chance to trash
+          case 2:   u8g.drawStr(2, 57, "Ult Vault Hunter"); break;      // Ult Vault Hunter mode - 2/20 chance to trash
           default:  u8g.drawStr(2, 57, "ERR"); break;
       }
     }while(u8g.nextPage());
@@ -296,8 +280,8 @@ void u8gPrintResults(int mode)
     switch(mode)
     {
       case 0: u8g.drawStr(2, 19, "Scaling - Norm"); compVal = 7; break;     // Scaling - Norm: 7/20 chance to trash
-      case 1: u8g.drawStr(2, 19, "Scaling - VH"); compVal = 4; break;       // Scaling - VH: 4/20 chance to trash
-      case 2: u8g.drawStr(2, 19, "Scaling - TVH"); compVal = 2; break;      // Scaling - TVH: 2/20 chance to trash
+      case 1: u8g.drawStr(2, 19, "Scaling - TVH"); compVal = 4; break;       // Scaling - TVH: 4/20 chance to trash
+      case 2: u8g.drawStr(2, 19, "Scaling - UVH"); compVal = 2; break;      // Scaling - UVH: 2/20 chance to trash
       case 3: u8g.drawStr(2, 19, "Pandemonium"); compVal = 10; break;       // Pandemonium: 10/20 chance to trash
       default: u8g.drawStr(2, 19, "ERR"); compVal = 21; break;              // ERROR state: ALL trash (?)
       }
@@ -365,8 +349,8 @@ void scalingNorm()
   }while(STATE == 4);      
 }
 
-// Function used for Scaling - Vault Hunter (VH) -- acts same as scalingNorm() except inputs different mode into u8gPrintResults
-void scalingVH()
+// Function used for Scaling - True Vault Hunter (TVH) -- acts same as scalingNorm() except inputs different mode into u8gPrintResults
+void scalingTVH()
 {
   SELSTATE = 0; 
     
@@ -386,8 +370,8 @@ void scalingVH()
   }while(STATE == 5); 
 }
 
-// Function used for Scaling - True Vault Hunter (TVH) -- acts same as scalingNorm() except inputs different mode into u8gPrintResult
-void scalingTVH()
+// Function used for Scaling - Ultimate Vault Hunter (UVH) -- acts same as scalingNorm() except inputs different mode into u8gPrintResult
+void scalingUVH()
 {
   SELSTATE = 0;
   
@@ -496,14 +480,14 @@ void loop()
       scalingNorm();
       break;
     }
-    case 5:              // Scaling - VH
-    {
-      scalingVH();
-      break;
-    }
-    case 6:               // Scaling - TVH
+    case 5:              // Scaling - TVH
     {
       scalingTVH();
+      break;
+    }
+    case 6:               // Scaling - UVH
+    {
+      scalingUVH();
       break;
     }
     case 7:               // Random Mode
